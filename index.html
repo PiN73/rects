@@ -54,9 +54,20 @@
 
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 			ctx.beginPath();
-			
-			var k = Math.min(canvas.width, canvas.height) / 10;
-			var x0 = canvas.width / 2, y0 = canvas.height / 2;
+
+			var w = canvas.width, h = canvas.height;
+			var x0 = w / 2, y0 = h / 2;
+
+			ctx.strokeStyle="#a0a0a0";
+			ctx.moveTo(0, y0);
+			ctx.lineTo(w, y0);
+			ctx.moveTo(x0, 0);
+			ctx.lineTo(x0, h);
+			ctx.stroke();
+
+			ctx.beginPath();
+			ctx.strokeStyle="#000000";
+			var k = Math.min(w, h) / 10;
 
 			function jump_to(p) {
 				ctx.moveTo(x0 + k * p.x, y0 - k * p.y);
@@ -68,30 +79,28 @@
 				console.log("line", p);
 			}
 
-			var first_point = null;
+			var drawing = false;
 
-			var lines = document.getElementById("myTextArea").value.split("\n");
+			var lines = textarea.value.split("\n");
 			lines.forEach(function(line) {
 				if (line == "") {
-					if (first_point != null) {
-						line_to(first_point);
-						first_point = null;
-					}
+					ctx.closePath();
+					drawing = false;
 				} else {
 					var nums = line.split(" ");
 					var point = {x:nums[0], y:nums[1]};
-					if (first_point == null) {
-						jump_to(point);
-						first_point = point;
+					if (drawing) {
+						line_to(point);
 					}
 					else {
-						line_to(point);
+						drawing = true;
+						jump_to(point);
 					}
 				}
 			});
 
-			if (first_point != null)
-				line_to(first_point);
+			if (drawing)
+				ctx.closePath();
 
 			ctx.stroke();
 		}
