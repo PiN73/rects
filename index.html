@@ -6,8 +6,21 @@
 		textarea {
 			font-family: monospace;
 			font-size: 18px;
+            flex: 40px;
+		}
+        
+        canvas {
+            flex: auto;
+        }
+        
+        html,
+		body {
+		    width: 100%;
+		    height: 100%;
+		    margin: 0;
 		}
 	</style>
+    
 	<script>
 		function update() {
 			var c = document.getElementById("myCanvas");
@@ -57,7 +70,7 @@
 	</script>
 </head>
 <body>
-	<textarea id="myTextArea" onkeyup="update()" onchange="update()" cols="50" rows="15"></textarea>
-	<canvas id="myCanvas" width="600" height="300" style="border:1px solid #d3d3d3;">
+	<textarea id="myTextArea" onkeyup="update()" onchange="update()" cols="20" rows="10"></textarea>
+	<canvas id="myCanvas" style="border:1px solid #d3d3d3;"></canvas>
 </body>
 </html>
