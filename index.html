@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style>
+		textarea {
+			font-family: monospace;
+			font-size: 18px;
+		}
+	</style>
+	<script>
+		function update() {
+			var c = document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			ctx.clearRect(0, 0, c.width, c.height);
+			ctx.beginPath();
+			
+			var k = 20;
+
+			function jump_to(p) {
+				ctx.moveTo(p.x * k + c.width / 2, p.y * k + c.height / 2);
+				console.log("jump", p);
+			}
+
+			function line_to(p) {
+				ctx.lineTo(p.x * k + c.width / 2, p.y * k + c.height / 2);
+				console.log("line", p);
+			}
+
+			var first_point = null;
+
+			var lines = document.getElementById("myTextArea").value.split("\n");
+			lines.forEach(function(line) {
+				if (line == "") {
+					if (first_point != null) {
+						line_to(first_point);
+						first_point = null;
+					}
+				} else {
+					var nums = line.split(" ");
+					var point = {x:nums[0], y:nums[1]};
+					if (first_point == null) {
+						jump_to(point);
+						first_point = point;
+					}
+					else {
+						line_to(point);
+					}
+				}
+			});
+
+			if (first_point != null)
+				line_to(first_point);
+
+			ctx.stroke();
+		}
+	</script>
+</head>
+<body>
+	<textarea id="myTextArea" onkeyup="update()" onchange="update()" cols="50" rows="15"></textarea>
+	<canvas id="myCanvas" width="600" height="300" style="border:1px solid #d3d3d3;">
+</body>
+</html>
